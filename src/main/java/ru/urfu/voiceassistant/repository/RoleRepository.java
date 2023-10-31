@@ -3,11 +3,11 @@ package ru.urfu.voiceassistant.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import ru.urfu.voiceassistant.model.User;
+import ru.urfu.voiceassistant.model.role.Role;
 
 @Component
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
-    User findByEmail(String email);
+    Role findByLogin(String name);
 }
