@@ -4,17 +4,14 @@
 >
 <head>
   <meta charset="UTF-8">
-  <title>All Users</title>
+  <title>Personal Page</title>
   <link rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
 </head>
 <body>
+
+  <h2>It's your personal page</h2>
   <a th:href="@{/logout}">Logout</a>
-  <h2>List of Registered Users</h2>
-  <tr th:each = "user : ${users}">
-    <td th:text = "${user.login}">Login: </td>
-    <td th:text = "${user.email}">Email: </td>
-  </tr>
 </body>
 </html>

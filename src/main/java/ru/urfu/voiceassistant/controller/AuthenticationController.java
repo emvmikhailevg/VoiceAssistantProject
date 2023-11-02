@@ -60,10 +60,10 @@ public class AuthenticationController {
     }
 
     @GetMapping("/users")
-    public String showUsers(@Valid @ModelAttribute UserDTO userDTO,
+    public String showUsers(@ModelAttribute UserDTO userDTO,
                             Model model){
-        List<UserDTO> usersList = userService.findAllUsers();
-        model.addAttribute("users", usersList);
+        User uniqueUser = userService.findUserByEmail(userDTO.getEmail());
+        model.addAttribute("user", uniqueUser);
         return "users";
     }
 }

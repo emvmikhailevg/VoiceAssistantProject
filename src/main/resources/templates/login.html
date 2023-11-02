@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Login</title>
-  <link rel="stylesheet">
+  <link rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
 </head>
 <body>
   <div th:if="${param.error}">
@@ -28,7 +30,7 @@
            name="password"
            class="form-control"
            placeholder="Enter password"/>
-      <button type="submit">Log In</button>
+      <button type="submit" th:href="@{/users}">Log In</button>
       <span> Not registered ?
         <a th:href="@{/register}">Register here</a>
       </span>
