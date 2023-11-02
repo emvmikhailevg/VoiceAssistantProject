@@ -54,7 +54,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAllUsers() {
         List<User> allUsers = userRepository.findAll();
-        return allUsers.stream()
+        return allUsers
+                .stream()
                 .map(this::mapToUserDto)
                 .collect(Collectors.toList());
     }

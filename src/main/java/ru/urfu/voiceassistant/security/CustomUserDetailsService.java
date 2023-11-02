@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
     @Autowired
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -34,8 +33,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     uniqueUser.getEmail(),
                     uniqueUser.getPassword(),
                     mapRolesToAuthorities(uniqueUser.getRoles()));
-        }else{
-            throw new UsernameNotFoundException("Invalid username or password.");
+        } else {
+            throw new UsernameNotFoundException("Invalid username or password");
         }
     }
 

@@ -19,7 +19,7 @@ public class UserDTO {
     private String login;
 
     @NotEmpty(message = "Email should not be empty")
-    @Email
+    @Email(message = "Email must be valid")
     private String email;
 
     @NotEmpty(message = "Password should not be empty")

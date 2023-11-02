@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.urfu.voiceassistant.dto.UserDTO;
 import ru.urfu.voiceassistant.model.User;
 import ru.urfu.voiceassistant.service.UserService;
@@ -15,11 +13,12 @@ import ru.urfu.voiceassistant.service.UserService;
 import java.util.List;
 
 @Controller
-public class AuthController {
+@RequestMapping("")
+public class AuthenticationController {
 
     private final UserService userService;
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthenticationController(UserService userService) {
         this.userService = userService;
     }
 
@@ -53,15 +52,16 @@ public class AuthController {
 
         if (result.hasErrors()) {
             model.addAttribute("user", userDTO);
-            return "/register";
+            return "register";
         }
 
         userService.saveUser(userDTO);
-        return "redirect:/register?success";
+        return "redirect:/login";
     }
 
     @GetMapping("/users")
-    public String showUsers(Model model){
+    public String showUsers(@Valid @ModelAttribute UserDTO userDTO,
+                            Model model){
         List<UserDTO> usersList = userService.findAllUsers();
         model.addAttribute("users", usersList);
         return "users";
