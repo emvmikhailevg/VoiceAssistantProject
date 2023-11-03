@@ -9,8 +9,8 @@ import ru.urfu.voiceassistant.model.User;
 
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

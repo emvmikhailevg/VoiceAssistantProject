@@ -10,8 +10,6 @@ import ru.urfu.voiceassistant.dto.UserDTO;
 import ru.urfu.voiceassistant.model.User;
 import ru.urfu.voiceassistant.service.UserService;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("")
 public class AuthenticationController {
@@ -44,10 +42,7 @@ public class AuthenticationController {
         User uniqueUser = userService.findUserByEmail(userDTO.getEmail());
 
         if (uniqueUser != null && uniqueUser.getEmail() != null && !uniqueUser.getEmail().isEmpty()) {
-            result.rejectValue(
-                    "email",
-                    null,
-                    "There is already an account registered with the same email");
+            result.rejectValue("email", "There is already an account registered with the same email");
         }
 
         if (result.hasErrors()) {
@@ -59,11 +54,11 @@ public class AuthenticationController {
         return "redirect:/login";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/personal_page")
     public String showUsers(@ModelAttribute UserDTO userDTO,
                             Model model){
         User uniqueUser = userService.findUserByEmail(userDTO.getEmail());
         model.addAttribute("user", uniqueUser);
-        return "users";
+        return "personalPage";
     }
 }
