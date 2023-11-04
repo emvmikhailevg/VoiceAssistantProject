@@ -20,7 +20,7 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String getHomePage() { return "index"; }
 
     @GetMapping("/login")
