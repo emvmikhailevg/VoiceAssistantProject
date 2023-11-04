@@ -11,10 +11,10 @@ import ru.urfu.voiceassistant.model.User;
 import ru.urfu.voiceassistant.service.UserService;
 
 @Controller
-@RequestMapping("")
 public class AuthenticationController {
 
     private final UserService userService;
+
     @Autowired
     public AuthenticationController(UserService userService) {
         this.userService = userService;
@@ -24,7 +24,7 @@ public class AuthenticationController {
     public String getHomePage() { return "index"; }
 
     @GetMapping("/login")
-    public String getLoginPage(){
+    public String getLoginPage() {
         return "login";
     }
 
@@ -36,9 +36,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register/save")
-    public String register(@Valid @ModelAttribute("user") UserDTO userDTO,
-                           BindingResult result,
-                           Model model) {
+    public String register(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model) {
         User uniqueUser = userService.findUserByEmail(userDTO.getEmail());
 
         if (uniqueUser != null && uniqueUser.getEmail() != null && !uniqueUser.getEmail().isEmpty()) {
@@ -55,8 +53,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/personal_page")
-    public String showUsers(@ModelAttribute UserDTO userDTO,
-                            Model model){
+    public String showUsers(@ModelAttribute("user") UserDTO userDTO, Model model) {
         User uniqueUser = userService.findUserByEmail(userDTO.getEmail());
         model.addAttribute("user", uniqueUser);
         return "personalPage";

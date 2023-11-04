@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
     @Autowired
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -38,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
-    private Collection < ? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
+    private Collection <? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
         return roles
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getLogin()))
