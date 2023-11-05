@@ -12,6 +12,7 @@ import ru.urfu.voiceassistant.controller.dto.UserDTO;
 import ru.urfu.voiceassistant.model.User;
 import ru.urfu.voiceassistant.service.UserService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -58,6 +59,14 @@ public class AuthenticationController {
 
     @PostMapping("/login/auth")
     public String login(@ModelAttribute UserDTO userDTO, HttpServletResponse response) {
+        List<UserDTO> allUsers = userService.findAllUsers();
+
+        for (UserDTO currentUser : allUsers) {
+            if (!currentUser.getEmail().equals(userDTO.getEmail())) {
+                return "/login";
+            }
+        }
+
         String token = UUID.randomUUID().toString();
         Cookie cookie = new Cookie("token", token);
         cookie.setPath("/");
@@ -75,7 +84,7 @@ public class AuthenticationController {
     @GetMapping("/personal_page")
     public String getPersonalPage() {
 //         достать куку с токеном - если есть в бд - работать
-//        if (token.idGoof()) {
+//        if (token.idGood()) {
 //            return personalPage
 //        } else {
 //            return unautherrorpage
