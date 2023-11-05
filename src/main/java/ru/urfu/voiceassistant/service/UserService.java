@@ -12,6 +12,4 @@ public interface UserService {
     User findUserByEmail(String email);
 
     List<UserDTO> findAllUsers();
-
-    void updateUserToken(Long id, String token);
 }

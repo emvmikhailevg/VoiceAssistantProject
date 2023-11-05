@@ -38,12 +38,12 @@ public class SecurityConfig {
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login/**").permitAll()
-                                .requestMatchers("/" +
-                                        "upload_file").permitAll()
+                                .requestMatchers("/upload_file").permitAll()
                                 .requestMatchers("/download_file").permitAll()
-                                .requestMatchers("/personal_page").permitAll()
+                                .requestMatchers("/personal_page").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
+                                .usernameParameter("email")
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/personal_page")

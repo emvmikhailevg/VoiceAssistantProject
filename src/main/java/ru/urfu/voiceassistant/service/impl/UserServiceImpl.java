@@ -61,12 +61,6 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional
-    public void updateUserToken(Long id, String token) {
-        userRepository.updateUserById(id, token);
-    }
-
     private UserDTO mapToUserDto(User user) {
         UserDTO userDTO = new UserDTO();
         String[] str = user.getLogin().split(" ");

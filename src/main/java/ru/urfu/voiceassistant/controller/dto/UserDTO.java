@@ -24,6 +24,4 @@ public class UserDTO {
 
     @NotEmpty(message = "Password should not be empty")
     private String password;
-
-    private String token;
 }

@@ -12,8 +12,4 @@ import ru.urfu.voiceassistant.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
-
-    @Modifying
-    @Query("update User user set user.token = ?2 where user.id = ?1")
-    void updateUserById(Long id, String token);
 }
