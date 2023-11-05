@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.urfu.voiceassistant.controller.dto.UserDTO;
-import ru.urfu.voiceassistant.model.User;
-import ru.urfu.voiceassistant.model.role.Role;
+import ru.urfu.voiceassistant.entity.UserEntity;
+import ru.urfu.voiceassistant.entity.role.Role;
 import ru.urfu.voiceassistant.repository.RoleRepository;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.UserService;
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(UserDTO userDTO) {
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setLogin(userDTO.getLogin());
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -48,20 +47,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByEmail(String email) {
+    public UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
     public List<UserDTO> findAllUsers() {
-        List<User> allUsers = userRepository.findAll();
+        List<UserEntity> allUsers = userRepository.findAll();
         return allUsers
                 .stream()
-                .map(this::mapToUserDto)
+                .map(this::mapToUserDTO)
                 .collect(Collectors.toList());
     }
 
-    private UserDTO mapToUserDto(User user) {
+    private UserDTO mapToUserDTO(UserEntity user) {
         UserDTO userDTO = new UserDTO();
         String[] str = user.getLogin().split(" ");
         userDTO.setLogin(str[0]);

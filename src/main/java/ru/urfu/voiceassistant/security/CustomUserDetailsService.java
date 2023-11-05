@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.model.User;
-import ru.urfu.voiceassistant.model.role.Role;
+import ru.urfu.voiceassistant.entity.UserEntity;
+import ru.urfu.voiceassistant.entity.role.Role;
 import ru.urfu.voiceassistant.repository.UserRepository;
 
 import java.util.Collection;
@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User uniqueUser = userRepository.findByEmail(email);
+        UserEntity uniqueUser = userRepository.findByEmail(email);
 
         if (uniqueUser != null) {
             return new org.springframework.security.core.userdetails.User(

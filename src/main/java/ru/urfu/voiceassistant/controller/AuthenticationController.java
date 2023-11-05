@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.urfu.voiceassistant.controller.dto.UserDTO;
-import ru.urfu.voiceassistant.model.User;
+import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.service.UserService;
 
 @Controller
@@ -37,7 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/register/save")
     public String register(@Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model) {
-        User uniqueUser = userService.findUserByEmail(userDTO.getEmail());
+        UserEntity uniqueUser = userService.findUserByEmail(userDTO.getEmail());
 
         if (uniqueUser != null && uniqueUser.getEmail() != null && !uniqueUser.getEmail().isEmpty()) {
             result.rejectValue("email", "There is already an account registered with the same email");
