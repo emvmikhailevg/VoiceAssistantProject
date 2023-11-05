@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.dto;
+package ru.urfu.voiceassistant.controller.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -24,4 +24,6 @@ public class UserDTO {
 
     @NotEmpty(message = "Password should not be empty")
     private String password;
+
+    private String token;
 }

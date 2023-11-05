@@ -37,8 +37,11 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/").permitAll()
-                                .requestMatchers("upload_file").permitAll()
-                                .requestMatchers("/personal_page").hasRole("ADMIN")
+                                .requestMatchers("/login/**").permitAll()
+                                .requestMatchers("/" +
+                                        "upload_file").permitAll()
+                                .requestMatchers("/download_file").permitAll()
+                                .requestMatchers("/personal_page").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

@@ -1,6 +1,6 @@
 package ru.urfu.voiceassistant.service;
 
-import ru.urfu.voiceassistant.dto.UserDTO;
+import ru.urfu.voiceassistant.controller.dto.UserDTO;
 import ru.urfu.voiceassistant.model.User;
 
 import java.util.List;
@@ -12,4 +12,6 @@ public interface UserService {
     User findUserByEmail(String email);
 
     List<UserDTO> findAllUsers();
+
+    void updateUserToken(Long id, String token);
 }

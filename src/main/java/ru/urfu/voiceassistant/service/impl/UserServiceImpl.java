@@ -4,7 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.dto.UserDTO;
+import org.springframework.transaction.annotation.Transactional;
+import ru.urfu.voiceassistant.controller.dto.UserDTO;
 import ru.urfu.voiceassistant.model.User;
 import ru.urfu.voiceassistant.model.role.Role;
 import ru.urfu.voiceassistant.repository.RoleRepository;
@@ -60,7 +61,13 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private UserDTO mapToUserDto(User user){
+    @Override
+    @Transactional
+    public void updateUserToken(Long id, String token) {
+        userRepository.updateUserById(id, token);
+    }
+
+    private UserDTO mapToUserDto(User user) {
         UserDTO userDTO = new UserDTO();
         String[] str = user.getLogin().split(" ");
         userDTO.setLogin(str[0]);
@@ -68,7 +75,7 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
-    private Role checkRoleExist(){
+    private Role checkRoleExist() {
         Role role = new Role();
         role.setLogin("ROLE_ADMIN");
         return roleRepository.save(role);
