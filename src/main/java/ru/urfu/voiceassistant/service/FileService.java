@@ -11,4 +11,6 @@ public interface FileService {
     void saveFile(FileUploadResponseDTO fileUploadResponseDTO, UserEntity user);
 
     List<FileEntity> findAllFiles();
+
+    List<FileEntity> findFilesById(Long id);
 }

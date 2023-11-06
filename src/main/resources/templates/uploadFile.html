@@ -12,5 +12,28 @@
     <br>
     <input type="submit" value="Upload File">
   </form>
+  <a th:href="@{/personal_page}">Back to the personal page</a>
+
+  <h2 th:text="${user}">List of Files of </h2>
+
+  <table>
+
+    <thead>
+    <tr>
+      <th>File Name</th>
+      <th>Size MB</th>
+      <th>Click To Download</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="file: ${files}">
+      <td th:text="${file.fileName}" />
+      <td th:text="${file.size}" />
+      <td><a th:href="${file.downloadURL}" th:text="${file.downloadURL}">Download File</a></td>
+    </tr>
+    </tbody>
+
+  </table>
+
 </body>
 </html>

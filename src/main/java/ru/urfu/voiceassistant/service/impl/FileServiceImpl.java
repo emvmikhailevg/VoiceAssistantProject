@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import ru.urfu.voiceassistant.controller.dto.FileUploadResponseDTO;
-import ru.urfu.voiceassistant.controller.dto.UserDTO;
 import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.FileRepository;
@@ -43,6 +42,11 @@ public class FileServiceImpl implements FileService {
                 .stream()
                 .map(this::mapToFileDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FileEntity> findFilesById(Long id) {
+        return fileRepository.findFileEntityByUserId(id);
     }
 
     private FileEntity mapToFileDTO(FileEntity file) {

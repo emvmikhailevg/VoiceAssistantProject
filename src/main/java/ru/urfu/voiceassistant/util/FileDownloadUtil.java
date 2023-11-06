@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.api.download;
+package ru.urfu.voiceassistant.util;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

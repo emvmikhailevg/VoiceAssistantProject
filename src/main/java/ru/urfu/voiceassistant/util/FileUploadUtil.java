@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.api.upload;
+package ru.urfu.voiceassistant.util;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.multipart.MultipartFile;

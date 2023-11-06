@@ -11,8 +11,11 @@
 </head>
 <body>
 
-  <h2>It's your personal page</h2>
+  <h2>Personal Page</h2>
+  <p th:text="${user.toString()}"></p>
+
   <a th:href="@{/upload_file}">Upload File</a>
   <a th:href="@{/logout}">Logout</a>
+
 </body>
 </html>

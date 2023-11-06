@@ -39,8 +39,8 @@ public class SecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/personal_page").hasRole("ADMIN")
-                                .requestMatchers("/upload_file").permitAll()
-                                .requestMatchers("/download_file").permitAll()
+                                .requestMatchers("/download_file/**").hasRole("ADMIN")
+                                .requestMatchers("/upload_file").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
                                 .usernameParameter("email")

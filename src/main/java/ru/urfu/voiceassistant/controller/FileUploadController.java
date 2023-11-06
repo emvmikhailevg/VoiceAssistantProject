@@ -2,20 +2,18 @@ package ru.urfu.voiceassistant.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.urfu.voiceassistant.api.upload.FileUploadUtil;
+import org.springframework.web.servlet.ModelAndView;
+import ru.urfu.voiceassistant.util.FileUploadUtil;
 import ru.urfu.voiceassistant.controller.dto.FileUploadResponseDTO;
-import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.FileService;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -33,7 +31,7 @@ public class FileUploadController {
 
     @PostMapping("")
     public String uploadFile(
-            @RequestParam("file") MultipartFile multipartFile, Principal principal, Model model) throws IOException {
+            @RequestParam("file") MultipartFile multipartFile, Principal principal) throws IOException {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
@@ -45,17 +43,23 @@ public class FileUploadController {
         fileUploadResponseDTO.setSize(size);
         fileUploadResponseDTO.setDownloadURL("/download_file/" + fileCode);
 
+        if (uniqueUser.getId() == null) {
+            return "redirect:/login";
+        }
+
         fileService.saveFile(fileUploadResponseDTO, uniqueUser);
-
-        List<FileEntity> allFiles = fileService.findAllFiles();
-
-        model.addAttribute("allFiles", allFiles);
 
         return "redirect:/upload_file";
     }
 
     @GetMapping("")
-    public String GetUploadFilePage() {
-        return "uploadFile";
+    public ModelAndView GetUploadFilePage(Principal principal) {
+        UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
+
+        ModelAndView modelAndView = new ModelAndView("uploadFile");
+        modelAndView.addObject("files", fileService.findFilesById(uniqueUser.getId()));
+        modelAndView.addObject("user", uniqueUser.getLogin());
+
+        return modelAndView;
     }
 }

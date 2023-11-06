@@ -1,10 +1,7 @@
 package ru.urfu.voiceassistant.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.urfu.voiceassistant.entity.role.Role;
 
 import java.util.ArrayList;
@@ -40,4 +37,9 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<FileEntity> files = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "login='" + login + '\'' + ", email='" + email + '\'';
+    }
 }
