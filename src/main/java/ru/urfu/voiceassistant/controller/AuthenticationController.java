@@ -40,7 +40,7 @@ public class AuthenticationController {
         UserEntity uniqueUser = userService.findUserByEmail(userDTO.getEmail());
 
         if (uniqueUser != null && uniqueUser.getEmail() != null && !uniqueUser.getEmail().isEmpty()) {
-            result.rejectValue("email", "There is already an account registered with the same email");
+            result.rejectValue("email", null, "There is already an account registered with the same email");
         }
 
         if (result.hasErrors()) {
@@ -49,6 +49,6 @@ public class AuthenticationController {
         }
 
         userService.saveUser(userDTO);
-        return "redirect:/login";
+        return "redirect:/register?success";
     }
 }
