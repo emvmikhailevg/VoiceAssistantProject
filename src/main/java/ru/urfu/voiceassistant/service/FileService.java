@@ -1,6 +1,6 @@
 package ru.urfu.voiceassistant.service;
 
-import ru.urfu.voiceassistant.controller.dto.FileUploadResponseDTO;
+import ru.urfu.voiceassistant.controller.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FileService {
 
-    void saveFile(FileUploadResponseDTO fileUploadResponseDTO, UserEntity user);
+    void saveFile(FileUploadResponseDAO fileUploadResponseDTO, UserEntity user);
 
     List<FileEntity> findAllFiles();
 

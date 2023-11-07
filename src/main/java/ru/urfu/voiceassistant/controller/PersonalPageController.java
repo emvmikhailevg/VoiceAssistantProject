@@ -26,7 +26,6 @@ public class PersonalPageController {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
         ModelAndView modelAndView = new ModelAndView("personalPage");
-
         modelAndView.addObject("user", uniqueUser);
 
         return modelAndView;

@@ -27,18 +27,15 @@ public class FileDownloadController {
             resource = downloadUtil.getFileAsResource(fileCode);
         } catch (IOException e) {
             return ResponseEntity.internalServerError().build();
-//            return "errorPage";
         }
 
         if (resource == null) {
             return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
-//            return "errorPage";
         }
 
         String contentType = "application/octet-stream";
         String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
 
-//        return "redirect:/upload_file";
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)

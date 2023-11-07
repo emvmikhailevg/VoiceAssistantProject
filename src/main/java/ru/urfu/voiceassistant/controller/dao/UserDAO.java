@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.controller.dto;
+package ru.urfu.voiceassistant.controller.dao;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserDAO {
 
     private Long id;
 

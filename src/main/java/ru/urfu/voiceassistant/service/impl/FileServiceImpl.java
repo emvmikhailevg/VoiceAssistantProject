@@ -3,7 +3,7 @@ package ru.urfu.voiceassistant.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.controller.dto.FileUploadResponseDTO;
+import ru.urfu.voiceassistant.controller.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.FileRepository;
@@ -24,12 +24,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void saveFile(FileUploadResponseDTO fileUploadResponseDTO, UserEntity user) {
+    public void saveFile(FileUploadResponseDAO fileUploadResponseDAO, UserEntity user) {
         FileEntity file = new FileEntity();
 
-        file.setFileName(fileUploadResponseDTO.getFileName());
-        file.setSize(fileUploadResponseDTO.getSize());
-        file.setDownloadURL(fileUploadResponseDTO.getDownloadURL());
+        file.setFileName(fileUploadResponseDAO.getFileName());
+        file.setSize(fileUploadResponseDAO.getSize());
+        file.setDownloadURL(fileUploadResponseDAO.getDownloadURL());
         file.setUser(user);
 
         fileRepository.save(file);

@@ -1,15 +1,13 @@
 package ru.urfu.voiceassistant.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import ru.urfu.voiceassistant.util.FileUploadUtil;
-import ru.urfu.voiceassistant.controller.dto.FileUploadResponseDTO;
+import ru.urfu.voiceassistant.controller.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.FileService;
@@ -40,7 +38,7 @@ public class FileUploadController {
         Double size = Math.round((multipartFile.getSize() / Math.pow(2, 20)) * 10.0) / 10.0;
         String fileCode = FileUploadUtil.saveFile(fileName, multipartFile);
 
-        FileUploadResponseDTO fileUploadResponseDTO = new FileUploadResponseDTO();
+        FileUploadResponseDAO fileUploadResponseDTO = new FileUploadResponseDAO();
         fileUploadResponseDTO.setFileName(fileName);
         fileUploadResponseDTO.setSize(size);
         fileUploadResponseDTO.setDownloadURL("/download_file/" + fileCode);

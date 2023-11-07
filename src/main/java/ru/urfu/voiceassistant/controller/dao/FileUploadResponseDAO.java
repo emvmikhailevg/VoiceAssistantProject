@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.controller.dto;
+package ru.urfu.voiceassistant.controller.dao;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileUploadResponseDTO {
+public class FileUploadResponseDAO {
 
     private Long id;
 

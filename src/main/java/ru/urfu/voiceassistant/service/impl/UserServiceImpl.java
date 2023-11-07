@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.controller.dto.UserDTO;
+import ru.urfu.voiceassistant.controller.dao.UserDAO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.entity.role.Role;
 import ru.urfu.voiceassistant.repository.RoleRepository;
@@ -32,11 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDTO userDTO) {
+    public void saveUser(UserDAO userDAO) {
         UserEntity user = new UserEntity();
-        user.setLogin(userDTO.getLogin());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setLogin(userDAO.getLogin());
+        user.setEmail(userDAO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDAO.getPassword()));
 
         Role role = roleRepository.findByLogin("ROLE_ADMIN");
 
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAllUsers() {
+    public List<UserDAO> findAllUsers() {
         List<UserEntity> allUsers = userRepository.findAll();
         return allUsers
                 .stream()
@@ -60,12 +60,12 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private UserDTO mapToUserDTO(UserEntity user) {
-        UserDTO userDTO = new UserDTO();
+    private UserDAO mapToUserDTO(UserEntity user) {
+        UserDAO userDAO = new UserDAO();
         String[] str = user.getLogin().split(" ");
-        userDTO.setLogin(str[0]);
-        userDTO.setEmail(user.getEmail());
-        return userDTO;
+        userDAO.setLogin(str[0]);
+        userDAO.setEmail(user.getEmail());
+        return userDAO;
     }
 
     private Role checkRoleExist() {
