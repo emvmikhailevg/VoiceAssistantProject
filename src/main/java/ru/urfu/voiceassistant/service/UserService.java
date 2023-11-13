@@ -1,6 +1,6 @@
 package ru.urfu.voiceassistant.service;
 
-import ru.urfu.voiceassistant.controller.dao.UserDAO;
+import ru.urfu.voiceassistant.dao.UserDAO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 
 import java.util.List;

@@ -18,5 +18,28 @@
   <a th:href="@{/upload_file}">Upload File</a>
   <a th:href="@{/logout}">Logout</a>
 
+  <h2>List of Files</h2>
+
+  <p th:text="${user}"/>
+
+  <h3>Last 5 uploaded files</h3>
+
+  <table>
+
+    <thead>
+    <tr>
+      <th>File Name</th>
+      <th>Size MB</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="file: ${recentUploadedFiles}">
+      <td th:text="${file.fileName}" />
+      <td th:text="${file.size}" />
+    </tr>
+    </tbody>
+
+  </table>
+
 </body>
 </html>

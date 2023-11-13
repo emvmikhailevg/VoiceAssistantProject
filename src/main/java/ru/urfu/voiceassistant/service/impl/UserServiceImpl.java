@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.controller.dao.UserDAO;
+import ru.urfu.voiceassistant.dao.UserDAO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.entity.role.Role;
 import ru.urfu.voiceassistant.repository.RoleRepository;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import ru.urfu.voiceassistant.util.FileUploadUtil;
-import ru.urfu.voiceassistant.controller.dao.FileUploadResponseDAO;
+import ru.urfu.voiceassistant.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.FileService;

@@ -1,6 +1,6 @@
 package ru.urfu.voiceassistant.service;
 
-import ru.urfu.voiceassistant.controller.dao.FileUploadResponseDAO;
+import ru.urfu.voiceassistant.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 

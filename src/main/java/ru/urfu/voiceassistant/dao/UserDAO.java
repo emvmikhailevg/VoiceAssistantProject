@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.controller.dao;
+package ru.urfu.voiceassistant.dao;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

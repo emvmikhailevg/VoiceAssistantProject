@@ -3,7 +3,7 @@ package ru.urfu.voiceassistant.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.controller.dao.FileUploadResponseDAO;
+import ru.urfu.voiceassistant.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.FileRepository;
