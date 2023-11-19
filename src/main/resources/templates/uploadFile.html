@@ -14,7 +14,12 @@
     <input type="submit" value="Upload File">
   </form>
 
+  <div th:if="${error}" class="error">
+    <p th:text="${error}"></p>
+  </div>
+
   <a th:href="@{/personal_page}">Back to the personal page</a>
+  <a th:href="@{/record}">Record Audio</a>
 
   <h2>List of Files</h2>
 

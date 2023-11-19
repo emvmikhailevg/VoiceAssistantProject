@@ -11,13 +11,6 @@
 </head>
 <body>
 
-  <h2>Personal Page</h2>
-
-  <p th:text="${user.toString()}"></p>
-
-  <a th:href="@{/upload_file}">Upload File</a>
-  <a th:href="@{/logout}">Logout</a>
-
   <h2>List of Files</h2>
 
   <p th:text="${user}"/>
@@ -40,6 +33,10 @@
     </tbody>
 
   </table>
+
+  <a th:href="@{/upload_file}">Upload File</a>
+  <a th:href="@{/record}">Record Voice</a>
+  <a th:href="@{/logout}">Logout</a>
 
 </body>
 </html>

@@ -2,15 +2,19 @@ package ru.urfu.voiceassistant.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import ru.urfu.voiceassistant.exception.UnsupportedFileTypeException;
 import ru.urfu.voiceassistant.util.FileUploadUtil;
 import ru.urfu.voiceassistant.dao.FileUploadResponseDAO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.FileService;
+
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -30,27 +34,39 @@ public class FileUploadController {
     }
 
     @PostMapping("")
-    public String uploadFile(
-            @RequestParam("file") MultipartFile multipartFile, Principal principal) throws IOException {
+    public String uploadFile(@RequestParam("file") MultipartFile multipartFile,
+                             Principal principal,
+                             Model model) throws IOException {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        Double size = Math.round((multipartFile.getSize() / Math.pow(2, 20)) * 10.0) / 10.0;
-        String fileCode = FileUploadUtil.saveFile(fileName, multipartFile);
+        try {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
-        FileUploadResponseDAO fileUploadResponseDTO = new FileUploadResponseDAO();
-        fileUploadResponseDTO.setFileName(fileName);
-        fileUploadResponseDTO.setSize(size);
-        fileUploadResponseDTO.setDownloadURL("/download_file/" + fileCode);
+            String fileExtension = FilenameUtils.getExtension(fileName);
+            if (!("mp3".equalsIgnoreCase(fileExtension) || "wav".equalsIgnoreCase(fileExtension))) {
+                throw new UnsupportedFileTypeException("Unsupported file type. Only mp3 and wav files are allowed.");
+            }
 
-        if (uniqueUser.getId() == null) {
-            return "redirect:/login";
+            Double size = Math.round((multipartFile.getSize() / Math.pow(2, 20)) * 10.0) / 10.0;
+            String fileCode = FileUploadUtil.saveFile(fileName, multipartFile);
+
+            FileUploadResponseDAO fileUploadResponseDTO = new FileUploadResponseDAO();
+            fileUploadResponseDTO.setFileName(fileName);
+            fileUploadResponseDTO.setSize(size);
+            fileUploadResponseDTO.setDownloadURL("/download_file/" + fileCode);
+
+            fileService.saveFile(fileUploadResponseDTO, uniqueUser);
+
+            return "redirect:/upload_file";
+        } catch (UnsupportedFileTypeException ex) {
+            model.addAttribute("error", ex.getMessage());
+            model.addAttribute("files", fileService.findFilesById(uniqueUser.getId()));
+            model.addAttribute("user", uniqueUser.getLogin());
+
+            return "uploadFile";
         }
-
-        fileService.saveFile(fileUploadResponseDTO, uniqueUser);
-
-        return "redirect:/upload_file";
     }
+
 
     @GetMapping("")
     public ModelAndView GetUploadFilePage(Principal principal) {

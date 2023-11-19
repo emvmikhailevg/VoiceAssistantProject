@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers("/personal_page").hasRole("ADMIN")
                                 .requestMatchers("/download_file/**").hasRole("ADMIN")
                                 .requestMatchers("/upload_file/**").hasRole("ADMIN")
+                                .requestMatchers("/record/**").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
                                 .usernameParameter("email")

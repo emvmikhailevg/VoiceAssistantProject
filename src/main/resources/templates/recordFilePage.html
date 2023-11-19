@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recording Page</title>
+</head>
+<body>
+    <h2>Audio Recording Page</h2>
+
+    <button id="recordButton" onclick="toggleRecording()">Начать запись</button>
+    <button id="playRecord" onclick="playRecording()" disabled>Воспроизвести запись</button>
+    <button id="saveRecord" onclick="saveRecording()" disabled>Сохранить запись</button>
+
+    <!-- Display success or error messages -->
+    <p id="message" style="color: green"></p>
+    <p id="error" style="color: red"></p>
+
+    <audio id="audioPlayer" controls></audio>
+
+    <a th:href="@{/upload_file}">Upload File</a>
+    <a th:href="@{/personal_page}">Personal Page</a>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        const recordButton = document.getElementById('recordButton');
+        const playRecordButton = document.getElementById('playRecord');
+        const saveRecordButton = document.getElementById('saveRecord');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const messageElement = document.getElementById('message');
+        const errorElement = document.getElementById('error');
+
+        function toggleRecording() {
+            if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.ondataavailable = event => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        recordButton.disabled = false;
+                        playRecordButton.disabled = false;
+                        saveRecordButton.disabled = false;
+                        messageElement.textContent = 'Recording stopped.';
+                        audioPlayer.src = URL.createObjectURL(new Blob(audioChunks, { type: 'audio/wav' }));
+                    };
+
+                    recordButton.disabled = false;
+                    playRecordButton.disabled = true;
+                    saveRecordButton.disabled = true;
+                    messageElement.textContent = 'Recording...';
+                    errorElement.textContent = '';
+
+                    mediaRecorder.start();
+                    recordButton.innerHTML = "Завершить запись"; // Обновление текста кнопки
+                })
+                .catch(error => {
+                    console.error('Error accessing microphone:', error);
+                    errorElement.textContent = 'Error accessing microphone: ' + error.message;
+                });
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            recordButton.innerHTML = "Начать запись"; // Обновление текста кнопки после завершения записи
+        }
+
+        function playRecording() {
+            audioPlayer.play();
+        }
+
+        function saveRecording() {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const formData = new FormData();
+            formData.append('multipartFile', new File([audioBlob], 'recorded_audio.wav'));
+
+            fetch('/record/save', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    messageElement.textContent = data;
+                })
+                .catch(error => {
+                    errorElement.textContent = 'Error saving file: ' + error.message;
+                });
+
+            // Reset state
+            audioChunks = [];
+            saveRecordButton.disabled = true;
+        }
+    </script>
+</body>
+</html>
