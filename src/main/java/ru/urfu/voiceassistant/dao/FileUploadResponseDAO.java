@@ -13,8 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FileUploadResponseDAO {
 
-    private Long id;
-
     @NotEmpty(message = "File name cannot be empty")
     private String fileName;
 

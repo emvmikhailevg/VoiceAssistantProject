@@ -11,8 +11,8 @@ import ru.urfu.voiceassistant.repository.RoleRepository;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
         user.setLogin(userDAO.getLogin());
         user.setEmail(userDAO.getEmail());
         user.setPassword(passwordEncoder.encode(userDAO.getPassword()));
+        user.setCreatedAt(LocalDateTime.now());
 
         Role role = roleRepository.findByLogin("ROLE_ADMIN");
 
@@ -49,23 +50,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public List<UserDAO> findAllUsers() {
-        List<UserEntity> allUsers = userRepository.findAll();
-        return allUsers
-                .stream()
-                .map(this::mapToUserDTO)
-                .collect(Collectors.toList());
-    }
-
-    private UserDAO mapToUserDTO(UserEntity user) {
-        UserDAO userDAO = new UserDAO();
-        String[] str = user.getLogin().split(" ");
-        userDAO.setLogin(str[0]);
-        userDAO.setEmail(user.getEmail());
-        return userDAO;
     }
 
     private Role checkRoleExist() {

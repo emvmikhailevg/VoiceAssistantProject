@@ -2,8 +2,10 @@ package ru.urfu.voiceassistant.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.urfu.voiceassistant.entity.role.Role;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +27,22 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private String name;
+
+    private String surname;
+
+    private String birthday;
+
+    @Column(unique = true)
+    private String number;
+
     @Column(nullable = false)
     private String password;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(
@@ -40,6 +56,6 @@ public class UserEntity {
 
     @Override
     public String toString() {
-        return "login='" + login + '\'' + ", email='" + email + '\'';
+        return "login = " + login + ", email = " + email;
     }
 }

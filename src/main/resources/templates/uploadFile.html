@@ -32,6 +32,7 @@
       <th>File Name</th>
       <th>Size MB</th>
       <th>Click To Download</th>
+      <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -39,6 +40,8 @@
       <td th:text="${file.fileName}" />
       <td th:text="${file.size}" />
       <td><a th:href="${file.downloadURL}" th:text="${file.downloadURL}">Download File</a></td>
+      <td><a th:href="@{/upload_file/delete/{fileId}(fileId=${file.id})}"
+             onclick="return confirm('Are you sure?')">Delete</a></td>
     </tr>
     </tbody>
 

@@ -16,6 +16,7 @@ import ru.urfu.voiceassistant.service.FileService;
 
 import org.apache.commons.io.FilenameUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Objects;
@@ -28,7 +29,8 @@ public class FileUploadController {
     private final UserRepository userRepository;
 
     @Autowired
-    public FileUploadController(FileService fileService, UserRepository userRepository) {
+    public FileUploadController(FileService fileService,
+                                UserRepository userRepository) {
         this.fileService = fileService;
         this.userRepository = userRepository;
     }
@@ -58,15 +60,14 @@ public class FileUploadController {
             fileService.saveFile(fileUploadResponseDTO, uniqueUser);
 
             return "redirect:/upload_file";
-        } catch (UnsupportedFileTypeException ex) {
-            model.addAttribute("error", ex.getMessage());
+        } catch (UnsupportedFileTypeException e) {
+            model.addAttribute("error", e.getMessage());
             model.addAttribute("files", fileService.findFilesById(uniqueUser.getId()));
             model.addAttribute("user", uniqueUser.getLogin());
 
             return "uploadFile";
         }
     }
-
 
     @GetMapping("")
     public ModelAndView GetUploadFilePage(Principal principal) {
@@ -77,5 +78,20 @@ public class FileUploadController {
         modelAndView.addObject("user", uniqueUser.getLogin());
 
         return modelAndView;
+    }
+
+    @GetMapping("/delete/{fileId}")
+    public String deleteFile(@PathVariable Long fileId, Principal principal, Model model) {
+        UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
+
+        try {
+            fileService.deleteFile(fileId, uniqueUser);
+        } catch (FileNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "redirect:/upload_file";
     }
 }

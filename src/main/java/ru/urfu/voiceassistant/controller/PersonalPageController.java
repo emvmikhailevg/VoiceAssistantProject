@@ -30,18 +30,24 @@ public class PersonalPageController {
     public ModelAndView getPersonalPage(Principal principal) {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
+        ModelAndView modelAndViewPersonalPage = new ModelAndView("personalPage");
+        ModelAndView modelAndViewLogin = new ModelAndView("login");
+
+        if (uniqueUser == null) {
+            return modelAndViewLogin;
+        }
+
         List<FileEntity> allFiles = fileService.findFilesById(uniqueUser.getId());
 
-        ModelAndView modelAndView = new ModelAndView("personalPage");
-        modelAndView.addObject("user", uniqueUser);
+        modelAndViewPersonalPage.addObject("user", uniqueUser);
 
         if (allFiles.size() < 5) {
-            modelAndView.addObject("recentUploadedFiles", allFiles);
+            modelAndViewPersonalPage.addObject("recentUploadedFiles", allFiles);
         } else {
-            modelAndView.addObject(
+            modelAndViewPersonalPage.addObject(
                     "recentUploadedFiles", allFiles.subList(allFiles.size() - 5, allFiles.size()));
         }
 
-        return modelAndView;
+        return modelAndViewPersonalPage;
     }
 }
