@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import ru.urfu.voiceassistant.exception.UnsupportedFileTypeException;
+import ru.urfu.voiceassistant.repository.FileRepository;
 import ru.urfu.voiceassistant.util.FileUploadUtil;
-import ru.urfu.voiceassistant.dao.FileUploadResponseDAO;
+import ru.urfu.voiceassistant.dto.FileUploadResponseDTO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
 import ru.urfu.voiceassistant.service.FileService;
@@ -21,18 +22,23 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Objects;
 
+import static ru.urfu.voiceassistant.util.FileUploadUtil.deleteFileByCode;
+
 @Controller
 @RequestMapping("/upload_file")
 public class FileUploadController {
 
     private final FileService fileService;
     private final UserRepository userRepository;
+    private final FileRepository fileRepository;
 
     @Autowired
     public FileUploadController(FileService fileService,
-                                UserRepository userRepository) {
+                                UserRepository userRepository,
+                                FileRepository fileRepository) {
         this.fileService = fileService;
         this.userRepository = userRepository;
+        this.fileRepository = fileRepository;
     }
 
     @PostMapping("")
@@ -52,7 +58,7 @@ public class FileUploadController {
             Double size = Math.round((multipartFile.getSize() / Math.pow(2, 20)) * 10.0) / 10.0;
             String fileCode = FileUploadUtil.saveFile(fileName, multipartFile);
 
-            FileUploadResponseDAO fileUploadResponseDTO = new FileUploadResponseDAO();
+            FileUploadResponseDTO fileUploadResponseDTO = new FileUploadResponseDTO();
             fileUploadResponseDTO.setFileName(fileName);
             fileUploadResponseDTO.setSize(size);
             fileUploadResponseDTO.setDownloadURL("/download_file/" + fileCode);
@@ -74,6 +80,12 @@ public class FileUploadController {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
         ModelAndView modelAndView = new ModelAndView("uploadFile");
+        ModelAndView modelAndViewLogin = new ModelAndView("login");
+
+        if (uniqueUser == null) {
+            return modelAndViewLogin;
+        }
+
         modelAndView.addObject("files", fileService.findFilesById(uniqueUser.getId()));
         modelAndView.addObject("user", uniqueUser.getLogin());
 
@@ -85,6 +97,9 @@ public class FileUploadController {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
         try {
+            String linkToDownload = fileRepository.findFileEntityById(fileId).getDownloadURL();
+            String fileCode = linkToDownload.substring(linkToDownload.lastIndexOf("/") + 1);
+            deleteFileByCode(fileCode);
             fileService.deleteFile(fileId, uniqueUser);
         } catch (FileNotFoundException e) {
             model.addAttribute("error", e.getMessage());

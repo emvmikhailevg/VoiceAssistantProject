@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.dao.FileUploadResponseDAO;
+import ru.urfu.voiceassistant.dto.FileUploadResponseDTO;
 import ru.urfu.voiceassistant.entity.FileEntity;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.FileRepository;
@@ -27,12 +27,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void saveFile(FileUploadResponseDAO fileUploadResponseDAO, UserEntity user) {
+    public void saveFile(FileUploadResponseDTO fileUploadResponseDTO, UserEntity user) {
         FileEntity file = new FileEntity();
 
-        file.setFileName(fileUploadResponseDAO.getFileName());
-        file.setSize(fileUploadResponseDAO.getSize());
-        file.setDownloadURL(fileUploadResponseDAO.getDownloadURL());
+        file.setFileName(fileUploadResponseDTO.getFileName());
+        file.setSize(fileUploadResponseDTO.getSize());
+        file.setDownloadURL(fileUploadResponseDTO.getDownloadURL());
         file.setUser(user);
 
         fileRepository.save(file);
@@ -40,7 +40,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public List<FileEntity> findFilesById(Long id) {
-        return fileRepository.findFileEntityByUserId(id);
+        return fileRepository.findFilesEntityByUserId(id);
     }
 
     @Override

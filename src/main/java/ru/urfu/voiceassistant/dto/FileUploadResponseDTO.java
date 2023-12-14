@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.dao;
+package ru.urfu.voiceassistant.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileUploadResponseDAO {
+public class FileUploadResponseDTO {
 
     @NotEmpty(message = "File name cannot be empty")
     private String fileName;
@@ -20,4 +22,6 @@ public class FileUploadResponseDAO {
 
     @NotNull(message = "URL cannot be null")
     private String downloadURL;
+
+    private LocalDateTime createdAt;
 }

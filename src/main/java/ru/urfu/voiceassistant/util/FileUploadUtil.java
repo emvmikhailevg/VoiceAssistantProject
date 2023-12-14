@@ -23,4 +23,16 @@ public class FileUploadUtil {
 
         return fileCode;
     }
+
+    public static void deleteFileByCode(String fileCode) throws IOException {
+        Path uploadDirectory = Paths.get("Files-Upload");
+
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(uploadDirectory, fileCode + "*")) {
+            for (Path file : directoryStream) {
+                Files.delete(file);
+            }
+        } catch (IOException e) {
+            throw new IOException("Error deleting files with code: " + fileCode, e);
+        }
+    }
 }

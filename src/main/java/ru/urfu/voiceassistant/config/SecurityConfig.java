@@ -38,16 +38,16 @@ public class SecurityConfig {
                                 .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login").permitAll()
-                                .requestMatchers("/personal_page").hasRole("ADMIN")
-                                .requestMatchers("/download_file/**").hasRole("ADMIN")
-                                .requestMatchers("/upload_file/**").hasRole("ADMIN")
-                                .requestMatchers("/record/**").hasRole("ADMIN")
+                                .requestMatchers("/personal_page/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers("/download_file/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers("/upload_file/**").hasAnyRole("ADMIN", "USER")
+                                .requestMatchers("/record/**").hasAnyRole("ADMIN", "USER")
                 ).formLogin(
                         form -> form
                                 .usernameParameter("email")
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/personal_page")
+                                .defaultSuccessUrl("/record")
                                 .permitAll()
                 ).logout(
                         logout -> logout

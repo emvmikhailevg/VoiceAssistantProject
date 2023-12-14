@@ -11,7 +11,9 @@ import java.util.List;
 @Repository
 public interface FileRepository extends JpaRepository<FileEntity, Long> {
 
-    List<FileEntity> findFileEntityByUserId(Long id);
+    List<FileEntity> findFilesEntityByUserId(Long id);
 
     void deleteById(Long id);
+
+    FileEntity findFileEntityById(Long id);
 }

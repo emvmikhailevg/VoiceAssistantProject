@@ -36,6 +36,25 @@
 
     <audio id="audioPlayer" controls></audio>
 
+    <table id="fileTable">
+
+        <thead>
+        <tr>
+            <th>File Name</th>
+            <th>Size MB</th>
+            <th>Click To Download</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="file: ${files}">
+            <td th:text="${file.fileName}"></td>
+            <td th:text="${file.size}"></td>
+            <td><a th:href="${file.downloadURL}" th:text="${file.downloadURL}">Download File</a></td>
+        </tr>
+        </tbody>
+
+    </table>
+
     <a th:href="@{/upload_file}">Upload File</a>
     <a th:href="@{/personal_page}">Personal Page</a>
 
@@ -97,20 +116,26 @@
         }
 
         function togglePlayPause() {
-            if (isPlaying) {
-                audioPlayer.pause();
-                playRecordButton.innerHTML = "Воспроизвести";
-            } else {
+            if (audioPlayer.paused || audioPlayer.ended) {
                 audioPlayer.play();
                 playRecordButton.innerHTML = "Пауза";
+            } else {
+                audioPlayer.pause();
+                playRecordButton.innerHTML = "Продолжить";
             }
+
             isPlaying = !isPlaying;
+
+            audioPlayer.onended = function() {
+                playRecordButton.innerHTML = "Возобновить";
+                isPlaying = false;
+            };
         }
 
         function saveRecording() {
             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
             const formData = new FormData();
-            formData.append('multipartFile', new File([audioBlob], 'recorded_audio.wav'));
+            formData.append('multipartFile', new File([audioBlob], 'rec.wav'));
 
             fetch('/record/save', {
                 method: 'POST',
@@ -123,7 +148,13 @@
                     return response.text();
                 })
                 .then(data => {
-                    messageElement.textContent = data;
+                    const redirectUrl = data.trim();
+                    if (redirectUrl.startsWith('redirect:')) {
+                        window.location.href = redirectUrl.substring('redirect:'.length);
+                    } else {
+                        messageElement.textContent = '';
+                        location.reload();
+                    }
                 })
                 .catch(error => {
                     errorElement.textContent = 'Error saving file: ' + error.message;

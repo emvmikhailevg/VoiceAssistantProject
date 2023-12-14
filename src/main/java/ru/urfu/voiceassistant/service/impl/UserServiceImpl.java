@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import ru.urfu.voiceassistant.dao.UserDAO;
+import ru.urfu.voiceassistant.dto.UserDTO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.entity.role.Role;
 import ru.urfu.voiceassistant.repository.RoleRepository;
@@ -32,14 +32,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(UserDAO userDAO) {
+    public void saveUser(UserDTO userDTO) {
         UserEntity user = new UserEntity();
-        user.setLogin(userDAO.getLogin());
-        user.setEmail(userDAO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDAO.getPassword()));
+        user.setLogin(userDTO.getLogin());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
 
-        Role role = roleRepository.findByLogin("ROLE_ADMIN");
+        Role role = roleRepository.findByLogin("ROLE_USER");
 
         if (role == null) { role = checkRoleExist(); }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     private Role checkRoleExist() {
         Role role = new Role();
-        role.setLogin("ROLE_ADMIN");
+        role.setLogin("ROLE_USER");
         return roleRepository.save(role);
     }
 }

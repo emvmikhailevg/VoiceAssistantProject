@@ -1,29 +1,30 @@
 package ru.urfu.voiceassistant.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import ru.urfu.voiceassistant.entity.FileEntity;
+import ru.urfu.voiceassistant.dto.UserDTO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
-import ru.urfu.voiceassistant.service.FileService;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/personal_page")
 public class PersonalPageController {
 
     private final UserRepository userRepository;
-    private final FileService fileService;
 
     @Autowired
-    public PersonalPageController(UserRepository userRepository, FileService fileService) {
+    public PersonalPageController(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.fileService = fileService;
     }
 
     @GetMapping("")
@@ -33,21 +34,34 @@ public class PersonalPageController {
         ModelAndView modelAndViewPersonalPage = new ModelAndView("personalPage");
         ModelAndView modelAndViewLogin = new ModelAndView("login");
 
+        modelAndViewPersonalPage.addObject("user", uniqueUser);
+
         if (uniqueUser == null) {
             return modelAndViewLogin;
         }
 
-        List<FileEntity> allFiles = fileService.findFilesById(uniqueUser.getId());
+        return modelAndViewPersonalPage;
+    }
 
-        modelAndViewPersonalPage.addObject("user", uniqueUser);
+    @PostMapping("/update")
+    public String updatePersonalInfo(@Valid @ModelAttribute UserDTO userDTO,
+                                     BindingResult bindingResult,
+                                     Principal principal,
+                                     Model model) {
+        model.addAttribute("userDAO", userDTO);
 
-        if (allFiles.size() < 5) {
-            modelAndViewPersonalPage.addObject("recentUploadedFiles", allFiles);
-        } else {
-            modelAndViewPersonalPage.addObject(
-                    "recentUploadedFiles", allFiles.subList(allFiles.size() - 5, allFiles.size()));
+        if (bindingResult.hasErrors() && userDTO.getPassword() != null) {
+            return "personalPage";
         }
 
-        return modelAndViewPersonalPage;
+        UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
+        uniqueUser.setName(userDTO.getName());
+        uniqueUser.setSurname(userDTO.getSurname());
+        uniqueUser.setBirthday(userDTO.getBirthday());
+        uniqueUser.setNumber(userDTO.getNumber());
+
+        userRepository.save(uniqueUser);
+
+        return "redirect:/personal_page";
     }
 }

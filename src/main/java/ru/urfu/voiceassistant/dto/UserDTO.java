@@ -1,4 +1,4 @@
-package ru.urfu.voiceassistant.dao;
+package ru.urfu.voiceassistant.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDAO {
+public class UserDTO {
 
     @NotEmpty(message = "Your login cannot be empty")
     private String login;
@@ -25,6 +25,7 @@ public class UserDAO {
 
     private String birthday;
 
+    @Pattern(regexp = "\\+7\\d{10}", message = "Invalid phone number")
     private String number;
 
     @NotEmpty(message = "Password should not be empty")
