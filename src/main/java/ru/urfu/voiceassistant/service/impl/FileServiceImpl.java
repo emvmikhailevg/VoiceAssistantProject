@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Component
 public class FileServiceImpl implements FileService {
 
     private final FileRepository fileRepository;

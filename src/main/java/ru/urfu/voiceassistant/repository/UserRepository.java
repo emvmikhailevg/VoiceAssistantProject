@@ -10,4 +10,8 @@ import ru.urfu.voiceassistant.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findByEmail(String email);
+
+    UserEntity findUserEntityByActivationCode(String activationCode);
+
+    UserEntity findUserEntityByResetToken(String resetToken);
 }

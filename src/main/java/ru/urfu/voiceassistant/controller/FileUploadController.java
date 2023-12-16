@@ -49,8 +49,8 @@ public class FileUploadController {
 
         try {
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-
             String fileExtension = FilenameUtils.getExtension(fileName);
+
             if (!("mp3".equalsIgnoreCase(fileExtension) || "wav".equalsIgnoreCase(fileExtension))) {
                 throw new UnsupportedFileTypeException("Unsupported file type. Only mp3 and wav files are allowed.");
             }

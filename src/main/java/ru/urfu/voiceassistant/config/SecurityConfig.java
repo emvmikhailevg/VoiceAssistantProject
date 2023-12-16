@@ -35,9 +35,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) ->
                         authorize
-                                .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login").permitAll()
+                                .requestMatchers("/register/**").permitAll()
+                                .requestMatchers("/activate/**").permitAll()
+                                .requestMatchers("/password_reset/**").permitAll()
+                                .requestMatchers("/password_recovery/**").permitAll()
                                 .requestMatchers("/personal_page/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers("/download_file/**").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers("/upload_file/**").hasAnyRole("ADMIN", "USER")

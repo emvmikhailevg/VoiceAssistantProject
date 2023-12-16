@@ -8,4 +8,8 @@ public interface UserService {
     void saveUser(UserDTO userDTO);
 
     UserEntity findUserByEmail(String email);
+
+    boolean activateUser(String activationCode);
+
+    void changePassword(UserEntity currentUser, String password);
 }
