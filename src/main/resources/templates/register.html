@@ -2,40 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Registration</title>
+  <title>Регистрация</title>
   <link rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
         crossorigin="anonymous">
 </head>
 <body>
 
-  <h2>Registration</h2>
+  <h2>Регистрация</h2>
 
   <br/>
 
-  <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
+  <form method="post" role="form" th:action="@{/register}" th:object="${user}">
     <label for="login"></label>
     <input id="login"
            name="login"
-           placeholder="Enter login"
+           placeholder="Имя пользователя"
            th:field="*{login}"
            type="text"/>
+    <br/>
 
     <label for="email"></label>
     <input id="email"
            name="email"
-           placeholder="Enter email address"
+           placeholder="Почта"
            th:field="*{email}"
            type="email"/>
+    <br/>
 
     <label for="password"></label>
     <input id="password"
            name="password"
-           placeholder="Enter password"
+           placeholder="Пароль"
            th:field="*{password}"
            type="password"/>
+    <br/>
 
-    <button type="submit">Register</button>
+    <label for="confirmPassword"></label>
+    <input id="confirmPassword"
+           name="confirmPassword"
+           placeholder="Подтвердите пароль"
+           th:field="*{confirmPassword}"
+           type="password"/>
+    <br/>
+
+    <button type="submit">Регистрация</button>
 
     <br/>
 
@@ -43,14 +54,18 @@
     <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
     <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 
-    <span>Already registered? <a th:href="@{/login}">Login</a></span>
+    <div th:if="${error}" class="error">
+      <p th:text="${error}"></p>
+    </div>
+
+    <span>Уже есть аккаунт?<a th:href="@{/login}">        Войти</a></span>
 
   </form>
 
   <br/>
 
   <div th:if="${param.success}">
-    <div> Good! Check your email </div>
+    <div>На вашу почту пришло письмо с подтверждением регистрации</div>
   </div>
 
 </body>

@@ -8,15 +8,29 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
+/**
+ * Конфигурационный класс для настройки отправки электронных писем через {@link JavaMailSender}.
+ */
 @Configuration
 public class EmailConfig {
 
+    /**
+     * Имя пользователя для подключения к почтовому серверу.
+     */
     @Value("${spring.mail.username}")
     private String username;
 
+    /**
+     * Пароль пользователя для подключения к почтовому серверу.
+     */
     @Value("${spring.mail.password}")
     private String password;
 
+    /**
+     * Метод, создающий и настраивающий {@link JavaMailSender} для отправки электронных писем.
+     *
+     * @return {@link JavaMailSender} с настроенными параметрами.
+     */
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

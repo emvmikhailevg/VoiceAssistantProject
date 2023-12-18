@@ -7,6 +7,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.urfu.voiceassistant.service.EmailSenderService;
 
+/**
+ * Реализация интерфейса {@link EmailSenderService}.
+ */
 @Service
 public class EmailSenderServiceImpl implements EmailSenderService {
 

@@ -13,22 +13,44 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Конфигурационный класс для установки параметров безопасности в приложении.
+ * Этот класс предоставляет конфигурации безопасности с использованием Spring Security
+ * для управления доступом к различным конечным точкам и управления аутентификацией пользователей.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Конструктор класса {@link SecurityConfig} с использованием указанного UserDetailsService.
+     *
+     * @param userDetailsService служба для загрузки данных, специфичных для пользователя.
+     */
     @Autowired
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Создает bean {@link PasswordEncoder} с использованием {@link BCryptPasswordEncoder}.
+     *
+     * @return экземпляр {@link BCryptPasswordEncoder}.
+     */
     @Bean
     public static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Создает цепочку фильтров безопасности с использованием {@link HttpSecurity}.
+     *
+     * @param http {@link HttpSecurity}, предоставляющий настройки безопасности.
+     * @return цепочка фильтров безопасности.
+     * @throws Exception возникает в случае ошибок при настройке цепочки фильтров безопасности.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -60,6 +82,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Конфигурирует глобальный {@link AuthenticationManagerBuilder}
+     * с использованием {@link UserDetailsService} и {@link PasswordEncoder}.
+     *
+     * @param auth {@link AuthenticationManagerBuilder} для настройки глобальной аутентификации.
+     * @throws Exception возникает в случае ошибок при настройке глобальной аутентификации.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth

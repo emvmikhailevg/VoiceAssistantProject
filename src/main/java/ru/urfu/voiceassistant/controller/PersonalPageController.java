@@ -13,26 +13,42 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.urfu.voiceassistant.dto.UserDTO;
 import ru.urfu.voiceassistant.entity.UserEntity;
 import ru.urfu.voiceassistant.repository.UserRepository;
+import ru.urfu.voiceassistant.util.enums.RedirectUrlNames;
+import ru.urfu.voiceassistant.util.enums.ViewNames;
 
 import java.security.Principal;
 
+/**
+ * Контроллер для управления персональной страницей пользователя.
+ */
 @Controller
 @RequestMapping("/personal_page")
 public class PersonalPageController {
 
     private final UserRepository userRepository;
 
+    /**
+     * Конструктор контроллера.
+     *
+     * @param userRepository Репозиторий пользователей.
+     */
     @Autowired
     public PersonalPageController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Получение персональной страницы пользователя.
+     *
+     * @param principal Текущий пользователь.
+     * @return Модель и представление "personalPage" с данными пользователя.
+     */
     @GetMapping("")
     public ModelAndView getPersonalPage(Principal principal) {
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
 
-        ModelAndView modelAndViewPersonalPage = new ModelAndView("personalPage");
-        ModelAndView modelAndViewLogin = new ModelAndView("login");
+        ModelAndView modelAndViewPersonalPage = new ModelAndView(ViewNames.PERSONAL_PAGE.getName());
+        ModelAndView modelAndViewLogin = new ModelAndView(ViewNames.LOGIN_PAGE.getName());
 
         modelAndViewPersonalPage.addObject("user", uniqueUser);
 
@@ -43,6 +59,15 @@ public class PersonalPageController {
         return modelAndViewPersonalPage;
     }
 
+    /**
+     * Обработка запроса на обновление персональной информации пользователя.
+     *
+     * @param userDTO        DTO с обновленными данными пользователя.
+     * @param bindingResult  Результат валидации данных.
+     * @param principal      Текущий пользователь.
+     * @param model          Модель для передачи данных в представление.
+     * @return Редирект на персональную страницу пользователя или страницу ввода данных в случае ошибки.
+     */
     @PostMapping("/update")
     public String updatePersonalInfo(@Valid @ModelAttribute UserDTO userDTO,
                                      BindingResult bindingResult,
@@ -51,7 +76,7 @@ public class PersonalPageController {
         model.addAttribute("userDAO", userDTO);
 
         if (bindingResult.hasErrors() && userDTO.getPassword() != null) {
-            return "personalPage";
+            return ViewNames.PERSONAL_PAGE.getName();
         }
 
         UserEntity uniqueUser = userRepository.findByEmail(principal.getName());
@@ -62,6 +87,6 @@ public class PersonalPageController {
 
         userRepository.save(uniqueUser);
 
-        return "redirect:/personal_page";
+        return "redirect:/%s".formatted(RedirectUrlNames.PERSONAL_PAGE.getUrlAddress());
     }
 }
